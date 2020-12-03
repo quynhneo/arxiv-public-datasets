@@ -74,9 +74,9 @@ def run_pdf2txt(pdffile: str, timelimit: int = TIMELIMIT, options: str = ''):
     log.debug('Running {} on {}'.format(PDF2TXT, pdffile))
     tmpfile = reextension(pdffile, 'pdf2txt')
 
-    cmd = '{cmd} {options} -o {output} {pdf}'.format(
+    cmd = '{cmd} {options} -o "{output}" "{pdf}"'.format(
         cmd=PDF2TXT, options=options, output=tmpfile, pdf=pdffile
-    )
+    ) # quote because split will mess up file name with space
     cmd = shlex.split(cmd)
     output = process_timeout(cmd, timeout=timelimit)
 
@@ -104,10 +104,12 @@ def run_pdftotext(pdffile: str, timelimit: int = TIMELIMIT) -> str:
     log.debug('Running {} on {}'.format(PDFTOTEXT, pdffile))
     tmpfile = reextension(pdffile, 'pdftotxt')
 
-    cmd = '{cmd} {pdf} {output}'.format(
-        cmd=PDFTOTEXT, pdf=pdffile, output=tmpfile
-    )
+    cmd = '{cmd} "{pdf}" "{output}"'.format(
+        cmd=PDFTOTEXT, pdf= pdffile, output=tmpfile
+    ) # quote because split will mess up file name with space
+
     cmd = shlex.split(cmd)
+
     output = process_timeout(cmd, timeout=timelimit)
 
     with open(tmpfile) as f:
@@ -191,7 +193,7 @@ def fulltext(pdffile: str, timelimit: int = TIMELIMIT):
         raise RuntimeError(
             'No accurate text could be extracted from "{}"'.format(pdffile)
         )
-    
+
     try:
         os.remove(reextension(pdffile, 'pdftotxt'))  # remove the tempfile
     except OSError:
