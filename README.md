@@ -1,8 +1,10 @@
 # My modification:
+
 **on fork branch**
 I edited the fulltext() method if you have any (nested) directory containing pdfs, it will convert all pdfs to text files. 	
 This is the case if you download the arxiv from Kaggle. It took 20 2.5Ghz cores x 20 hours to convert 2 millions pdfs to text.	
 Everything else is the same as the original repo	
+
 **on Master branch**
 Full integration of new methods for working with Kaggle data set. If you would like to work with Kaggle data set, please switch to branch `master`. Eventually it will merge to original master.
 # arXiv public datasets
