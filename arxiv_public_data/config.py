@@ -46,7 +46,7 @@ except Exception as e:
     DIR_BASE = DEFAULT_PATH
 
 DIR_FULLTEXT = os.path.join(DIR_BASE, 'fulltext')
-DIR_PDFTARS = os.path.join(DIR_BASE, 'tarpdfs')
+DIR_PDFTARS = "/arxiv_pdf_before_042007" #os.path.join(DIR_BASE, 'tarpdfs')
 DIR_OUTPUT = os.path.join(DIR_BASE, 'output')
 LOGGER = baselog
 
