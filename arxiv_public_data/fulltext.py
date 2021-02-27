@@ -3,12 +3,13 @@ import re
 import sys
 import glob
 import shlex
+import pathlib
 from functools import partial
 
 from multiprocessing import Pool
 from subprocess import check_call, CalledProcessError, TimeoutExpired, PIPE
 
-from arxiv_public_data.config import LOGGER
+from arxiv_public_data.config import LOGGER, DIR_PDFTARS, DIR_FULLTEXT  # put here now but probably should interface
 from arxiv_public_data import fixunicode, pdfstamp
 
 log = LOGGER.getChild('fulltext')
@@ -278,6 +279,7 @@ def convert_directory(path: str, timelimit: int = TIMELIMIT):
         outlist.append(pdffile)
     return outlist
 
+
 def convert_directory_parallel(path: str, processes: int, timelimit: int = TIMELIMIT):
     """
     Convert all pdfs in a given `path` to full plain text. For each pdf, a file
@@ -333,10 +335,19 @@ def convert(path: str, skipconverted=True, timelimit: int = TIMELIMIT) -> str:
     """
     if not os.path.exists(path):
         raise RuntimeError('No such path: %s' % path)
-    outpath = reextension(path, 'txt')
+    # relative path to DIR_PDFTARS folder, wrt to its parent
+    p = pathlib.Path(os.path.relpath(path, os.path.commonprefix([DIR_FULLTEXT, DIR_PDFTARS])))
+    # put sub-paths of DIR_PDFTARS inside DIR_FULLTEXT
+    text_path = os.path.join(DIR_FULLTEXT, pathlib.Path(*p.parts[1:]))
+    outpath = reextension(text_path, 'txt')  # change extension from pdf to text
 
     if os.path.exists(outpath):
         return outpath
+
+    try:
+        os.makedirs(os.path.dirname(outpath))  # create the folder
+    except Exception as e:
+        pass
 
     try:
         content = fulltext(path, timelimit)

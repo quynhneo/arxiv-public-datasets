@@ -22,7 +22,7 @@ if __name__ == '__main__':
     else:
         convert_directory_parallel(DIR_PDFTARS, processes=args.N)  # Convert directory of plain PDFs file
         #  Subprocesss to move the converted text files inside DIR_FULLTEXT, recursively
-        call('rsync -rv --remove-source-files --prune-empty-dirs --include="*.txt" --exclude="*.pdf" '
-             '--exclude="{}" --exclude="{}" {} {} '.format(os.path.basename(DIR_FULLTEXT),
-                                                           os.path.basename(DIR_OUTPUT),
-                                                           DIR_PDFTARS + os.sep, DIR_FULLTEXT), 0)
+        # call('rsync -rv --remove-source-files --prune-empty-dirs --include="*.txt" --exclude="*.pdf" '
+        #      '--exclude="{}" --exclude="{}" {} {} '.format(os.path.basename(DIR_FULLTEXT),
+        #                                                    os.path.basename(DIR_OUTPUT),
+        #                                                    DIR_PDFTARS + os.sep, DIR_FULLTEXT), 0)
