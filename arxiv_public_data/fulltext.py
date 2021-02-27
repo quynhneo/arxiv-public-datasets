@@ -103,7 +103,11 @@ def run_pdftotext(pdffile: str, timelimit: int = TIMELIMIT) -> str:
         Full plain text output
     """
     log.debug('Running {} on {}'.format(PDFTOTEXT, pdffile))
-    tmpfile = reextension(pdffile, 'pdftotxt')
+    #tmpfile = reextension(pdffile, 'pdftotxt')
+
+    # put temp file in the text folder
+    tmpfile = reextension(os.path.join(DIR_FULLTEXT, os.path.basename(pdffile)), 'pdftotxt')  # change extension
+
 
     cmd = '{cmd} "{pdf}" "{output}"'.format(
         cmd=PDFTOTEXT, pdf=pdffile, output=tmpfile
@@ -177,7 +181,7 @@ def fulltext(pdffile: str, timelimit: int = TIMELIMIT):
 
     if wordlength <= 45:
         try:
-            os.remove(reextension(pdffile, 'pdftotxt'))  # remove the tempfile
+            os.remove(reextension(os.path.join(DIR_FULLTEXT, os.path.basename(pdffile)), 'pdftotxt'))  # remove the tempfile
         except OSError:
             pass
 
@@ -194,7 +198,7 @@ def fulltext(pdffile: str, timelimit: int = TIMELIMIT):
         )
 
     try:
-        os.remove(reextension(pdffile, 'pdftotxt'))  # remove the tempfile
+        os.remove(reextension(os.path.join(DIR_FULLTEXT, os.path.basename(pdffile)), 'pdftotxt'))  # remove the tempfile
     except OSError:
         pass
 
